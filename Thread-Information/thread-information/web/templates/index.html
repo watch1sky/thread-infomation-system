@@ -1,0 +1,120 @@
+
+{% extends "bootstrap/base.html" %}
+
+{% block title %}威胁分析平台{% endblock %}
+
+{% block head %}
+  {{super()}}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/static/images/branding/google_shortcut.ico" rel="shortcut icon">
+  <link href="/static/css/index.css" type="text/css" rel="stylesheet" >
+  <!-- <script src="http://cdn.rawgit.com/phi-jp/phina.js/v0.2.0/build/phina.js"></script> -->
+{% endblock %}
+
+{% block navbar %}
+<div id="navbar" class="navbar navbar-fixed-top nav" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand nav_a" href="/">
+          首页
+        </a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav" id="nav_ul">
+          <li style="background:#4285f4;"><a class="nav_a">威</a></li>
+          <li style="background:#ea4335;"><a class="nav_a">胁</a></li>
+          <li style="background:#fbbd0b;"><a class="nav_a">分</a></li>
+          <li style="background:#4285f4;"><a class="nav_a">析</a></li>
+          <li style="background:#34a853;"><a class="nav_a">平</a></li>
+          <li style="background:#ea4335;"><a class="nav_a">台</a></li>
+        </ul>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<br><br><br>
+<div class="container" id="content">
+
+
+    <form action="/query/" method="get" class="row" style="margin:0 20%" id="inputBar">
+        <input type="text" name="q" size="70">
+        <input type="submit" value="Search">
+    </form>
+
+  <br><br>
+
+  {% if error %}
+
+    <div class="alert alert-warning" role="alert">未找到该条记录</div>
+    <div class="alert alert-danger" role="alert">{{ error_msg }}</div>
+
+  {% else %}
+
+    {% if search_info %}
+      <div class="alert alert-success" role="alert">{{ search_info }}</div>
+    {% endif %}
+
+    {% if results %}
+      <div class="navcnt">
+        <table style="border-collapse:collapse;text-align:left;margin:20px auto 30px" id="pager" role="presentation" border="1" width="700" >
+            <h4>查询的结果</h4>
+          <tr align="center">
+            {% for keys in results.keys() %}
+              <td>{{ keys }}</td>
+            {% endfor %}
+          </tr>
+          <tr align="center">
+            {% for values in results.values() %}
+              <td>{{ values }}</td>
+            {% endfor %}
+          </tr>
+        </table>
+      <table style="border-collapse:collapse;text-align:left;margin:20px auto 30px" id="pager" role="presentation" border="1" width="700" >
+          <h4>预测的结果</h4>
+         <tr align="center">
+             {% for info in city_pre %}
+             <td>{{ info[0] }}</td>
+             <td>{{ info[1] }}</td>
+             {% endfor %}
+         </tr>
+      </table>
+
+
+          <table style="border-collapse:collapse;text-align:left;margin:20px auto 30px" id="pager" role="presentation" border="1" width="700" >
+              {% for keys in pre %}
+                <tr align="center">
+                    {% for key in keys.values() %}
+                        <td>{{ key }}</td>
+                    {% endfor %}
+                </tr>
+              {% endfor %}
+          </table>
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+  <div class="page-header">
+      <p style="text-align:center">
+        <embed src="/static/images/ips_map.svg" type="image/svg+xml" />
+      </p>
+    </div>
+
+</div>
+
+<!-- <script src='/static/js/piko.js'></script> -->
+{% endblock %}
+
+{% block scripts %}
+  {{super()}}
+  <script type="text/javascript" src="/static/js/index.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function () {
+    // $("#content").empty();
+  });
+  </script>
+
+{% endblock %}
